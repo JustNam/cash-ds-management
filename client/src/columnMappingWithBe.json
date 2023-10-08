@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Time",
+        "dataIndex": "time",
+        "key": "time"
+    },
+    {
+        "title": "Gross Amount",
+        "dataIndex": "grossAmount",
+        "key": "grossAmount"
+    },
+    {
+        "title": "Gross Currency",
+        "dataIndex": "grossCurrency",
+        "key": "grossCurrency"
+    },
+    {
+        "title": "Net Amount",
+        "dataIndex": "netAmount",
+        "key": "netAmount"
+    },
+    {
+        "title": "Net Currency",
+        "dataIndex": "netCurrency",
+        "key": "netCurrency"
+    },
+    {
+        "title": "Fee",
+        "dataIndex": "fee",
+        "key": "fee"
+    },
+    {
+        "title": "Bank Account",
+        "dataIndex": "bankAccount",
+        "key": "bankAccount"
+    },
+    {
+        "title": "3rd Parner",
+        "dataIndex": "bankAccount",
+        "key": "bankAccount"
+    },
+    {
+        "title": "2nd Parner",
+        "dataIndex": "bankAccount",
+        "key": "bankAccount"
+    },
+    {
+        "title": "1st Parner",
+        "dataIndex": "bankAccount",
+        "key": "bankAccount"
+    }    
+]

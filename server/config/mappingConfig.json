@@ -1,0 +1,33 @@
+{
+    "PingPong": {
+        "startIndex": 11,
+        "netAmountSlitting": true,
+        "columnMapping": {
+            "TransactionId": "transactionId",
+            "Time": "time",
+            "Type": "type",
+            "Status": "status",
+            "Amount": "grossAmount",
+            "Currency": "grossCurrency",
+            "Net": "netAmount",
+            "Fee": "fee",
+            "CardNo": "bankAccount"
+        }
+    },
+    "Lianlian": {
+        "startIndex": 6,
+        "netAmountSlitting": false,
+        "columnMapping": {
+            "Transaction ID": "transactionId",
+            "Time created": "time",
+            "Transaction type": "type",
+            "Status": "status",
+            "Gross amount": "grossAmount",
+            "Gross currency": "grossCurrency",
+            "Net amount": "netAmount",
+            "Net currency": "netCurrency",
+            "Fee amount": "fee",
+            "Payee bank account": "bankAccount"
+        }
+    }
+}
