@@ -46,4 +46,8 @@ const TransactionModel = require('./Transaction');
 const Transaction = TransactionModel(sequelize, Sequelize);
 db.Transaction = Transaction;
 
+const AuthModel = require('./auth.model');
+const Auth = AuthModel(sequelize, Sequelize);
+db.Auth = Auth;
+
 module.exports = db;
