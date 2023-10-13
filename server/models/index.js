@@ -42,8 +42,11 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 // Import all the models
-const TransactionModel = require('./Transaction'); 
+const TransactionModel = require('./transaction'); 
+const UserModel = require('./user');
 const Transaction = TransactionModel(sequelize, Sequelize);
+const User = UserModel(sequelize, Sequelize);
 db.Transaction = Transaction;
+db.User = User;
 
 module.exports = db;

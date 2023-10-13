@@ -5,6 +5,7 @@ const app = express();
 const fs = require('fs');
 const port = 8888;
 const transactionController = require('./controllers/transactionController')
+const authMiddleware = require('./middleware/authMiddleware')
 
 // Enable CORS (Cross-Origin Resource Sharing) to allow requests from your frontend
 app.use((req, res, next) => {
@@ -13,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 // Get all the transaction
-app.get('/transactions', async (req, res) => {
+app.get('/transactions', authMiddleware, async (req, res) => {
   try {
     const transactions = await transactionController.getAllTransactions()
     transactions.map((element) => {
