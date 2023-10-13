@@ -12,6 +12,22 @@ app.use((req, res, next) => {
   next();
 });
 
+// Get all the transaction
+app.get('/transactions', async (req, res) => {
+  try {
+    const transactions = await transactionController.getAllTransactions()
+    transactions.map((element) => {
+      // Mask the bank data
+      element.bankAccount = "*" + element.bankAccount.slice(-4)
+      return element
+    });
+    res.json(transactions);
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ error: 'Failed to fetch transactions' });
+  }
+});
+
 // Use the fileUpload middleware to handle file uploads
 app.use(fileUpload());
 

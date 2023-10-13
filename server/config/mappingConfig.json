@@ -14,7 +14,7 @@
             "CardNo": "bankAccount"
         }
     },
-    "Lianlian": {
+    "LianLian": {
         "startIndex": 6,
         "netAmountSlitting": false,
         "columnMapping": {

@@ -23,6 +23,7 @@ module.exports = (req, res) => {
     // Initialize an array to store processed records
     const processedTransactions = [];
 
+
     // Get mapping rules from the config file
     const columnMapping = config[platform].columnMapping;
     const startIndex = config[platform].startIndex;
@@ -45,24 +46,28 @@ module.exports = (req, res) => {
       // (Temp Solution) Map columns to properties based on the mapping configuration
       Object.keys(columnMapping).forEach((columnName) => {
         propertyName = columnMapping[columnName]
+        originalValue = row[headerRow.indexOf(columnName)]
         if (netAmountSlitting && columnName == 'Net') {
           // Split the currency
-          originalValue = row[headerRow.indexOf(columnName)]
           record[propertyName] = originalValue ? originalValue.slice(0, -3) : null;
           record['netCurrency'] = originalValue ? originalValue.slice(-3) : null;
-        } else if (propertyName == 'bankAccount') {
-          // Mask the bank data
-          record[propertyName] = (row[headerRow.indexOf(columnName)]) ? ('*' + row[headerRow.indexOf(columnName)].slice(-4)) : null
+        } else if (propertyName == 'time') {
+          // Convert the time format 
+          const rawTime = originalValue;
+          const timeParts = rawTime.match(/(\d{2}-[A-Za-z]{3}-\d{4}) (\d{2}:\d{2}:\d{2})/);
+          if (timeParts) {
+            const [fullMatch, date, time] = timeParts;
+            const formattedTime = `${date.replace('-', ' ').replace('-', '')} ${time}`;
+            record[propertyName] = formattedTime;
+          }
         } else {
-          record[propertyName] = row[headerRow.indexOf(columnName)] ? row[headerRow.indexOf(columnName)] : null
+          record[propertyName] = originalValue ? originalValue : null
         }
       });
 
       processedTransactions.push(record);
     });
-
-    // Create transactions in database, slice the array temporarily because
-    transactionController.createTransactions(processedTransactions.slice(0,12))
+    transactionController.createTransactions(processedTransactions.slice(0, 6))
       .then(result => {
         res.json(result);
       })
