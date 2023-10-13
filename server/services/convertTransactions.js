@@ -64,7 +64,6 @@ module.exports = (req, res) => {
     // Create transactions in database, slice the array temporarily because
     transactionController.createTransactions(processedTransactions.slice(0,12))
       .then(result => {
-        console.log("Response returned:", result)
         res.json(result);
       })
       .catch(error => {

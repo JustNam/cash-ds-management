@@ -25,7 +25,6 @@ function HomePage() {
     // Prepare the data to send
     formData.append('file', file);
     formData.append('platform', selectedPlatform);
-    console.log(selectedPlatform);
 
 
     // Send the data and handle the response
