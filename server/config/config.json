@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "namnguyen",
-    "password": "namnguyen",
+    "username": "root",
+    "password": "1234",
     "database": "cashmanagementdb",
     "host": "localhost",
     "dialect": "mysql",
