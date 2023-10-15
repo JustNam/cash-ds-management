@@ -1,16 +1,26 @@
-import React from "react";
-import {Button, Card, Col, Form, Input, Row} from "antd";
+import React, { useState } from "react";
+import { Button, Card, Col, Form, Input, Row } from "antd";
 
-import userApi from "../api/user"
+import userApi from "../api/user";
+import { useAuth } from "../hooks/useAuth";
 
 function LoginPage() {
-  const onFinish = async (values) => {
-    const {username, password} = values;
-    const loginResponse = await userApi.login(username, password)
-    if (!loginResponse.token){
-      // show message
-    }
+  const [showErrLogin, setShowErrLogin] = useState(false)
+  const { login } = useAuth();
 
+  const onFinish = async (values) => {
+    const { username, password } = values;
+    const { data: user = {} } = await userApi.login(username, password);
+    if (!user.token) {
+      // show message
+      setShowErrLogin(true);
+      return;
+    }
+    if (user.user_type === "admin") {
+      login(user, "/usersManagement")
+      return;
+    }
+    login(user)
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -23,9 +33,9 @@ function LoginPage() {
         <Card title="Login Page">
           <Form
             name="basic"
-            wrapperCol={{span: 22}}
-            style={{maxWidth: 600}}
-            initialValues={{remember: true}}
+            wrapperCol={{ span: 22 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -56,7 +66,8 @@ function LoginPage() {
             >
               <Input.Password/>
             </Form.Item>
-
+            <span hidden={!showErrLogin}
+                  style={{ color: "red" }}>Username or Password invalid! Please check it again!</span>
             <Form.Item
               wrapperCol={{
                 offset: 4,

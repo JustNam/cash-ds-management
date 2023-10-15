@@ -1,11 +1,12 @@
-import React, {useState} from "react";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {Button, Space, Modal} from "antd";
+import React, { useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Space, Modal } from "antd";
 
 import userApi from "../api/user";
 
 const ActionCell = props => {
-  const userId = props;
+  const { userId, onRefreshData } = props;
+
   const [openRemove, setOpenRemove] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -17,25 +18,30 @@ const ActionCell = props => {
     setOpenRemove(true);
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
     setConfirmDelete(true);
-    setTimeout(() => {
+    try {
+      await userApi.remove(userId);
+      onRefreshData();
       setOpenRemove(false);
       setConfirmDelete(false);
-    }, 2000);
+    } catch (ex) {
+      setOpenRemove(false);
+      setConfirmDelete(false);
+    }
+
+
   };
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
     setOpenRemove(false);
   };
-  const removeUser = async () => {
 
-  }
   return (
     <>
       <Space>
-        <Button type="primary" icon={<EditOutlined/>} />
+        <Button type="primary" icon={<EditOutlined/>}/>
         <Button type="primary" danger icon={<DeleteOutlined/>} onClick={showModalRemove}/>
       </Space>
       <Modal

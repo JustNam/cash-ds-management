@@ -5,11 +5,14 @@ const fileUpload = require("express-fileupload"); // Middleware for handling fil
 const app = express();
 const bodyParser = require("body-parser")
 const fs = require("fs");
+const cors = require('cors')
+
 const port = 8888;
 const transactionController = require("./controllers/transactionController")
 
 const userRouter = require("./route/user")
 
+app.use(cors())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 

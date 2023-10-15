@@ -1,29 +1,29 @@
 import axios from "axios";
+import { BASE_URL } from "./config";
 
 const axiosClient = axios.create({
-  baseURL: "",
+  baseURL: BASE_URL,
 })
 
 
-const listUsers = async (username, password) => {
+const listUsers = async () => {
   try {
-    return axiosClient.post("/user/login", {
-      username,
-      password
-    })
+    const { data } = await axiosClient.get("/user/list", {})
+    return data
   } catch (e) {
     throw Error("Call API Login Fail")
   }
 }
 
-const getUser = async (username, password) => {
+const getUser = async (userId) => {
   try {
-    return axiosClient.post("/user/login", {
-      username,
-      password
+    return axiosClient.get("/user", {
+      params: {
+        userId
+      }
     })
   } catch (e) {
-    throw Error("Call API Login Fail")
+    throw Error("Call API getUser Fail")
   }
 }
 
@@ -39,14 +39,18 @@ const login = async (username, password) => {
 }
 
 
-const create = async (username, password) => {
+const createOrUpdate = async ({ user_id, username, password, fullname, type, bank_accounts }) => {
   try {
-    return axiosClient.post("/user/login", {
+    return axiosClient.post("/user", {
+      user_id,
       username,
-      password
+      password,
+      fullname,
+      type,
+      bank_accounts
     })
   } catch (e) {
-    throw Error("Call API Login Fail")
+    throw Error("Call API Create Fail")
   }
 }
 
@@ -61,21 +65,34 @@ const update = async (username, password) => {
   }
 }
 
-const remove = async (username, password) => {
+const remove = async (userId) => {
   try {
-    return axiosClient.post("/user/login", {
-      username,
-      password
+    return axiosClient.post("/user/delete", {
+      user_id: userId
     })
   } catch (e) {
-    throw Error("Call API Login Fail")
+    throw Error("Call API remove Fail")
   }
 }
+
+const verifyToken = async (token) => {
+  try {
+    const { data } = await axiosClient.post("/user/tokenValid", {
+      token
+    })
+    console.log(data)
+    return data.isValid
+  } catch (e) {
+    throw Error("Call API remove Fail")
+  }
+}
+
 export default {
   login,
-  create,
+  createOrUpdate,
   getUser,
   listUsers,
   update,
-  remove
+  remove,
+  verifyToken
 }

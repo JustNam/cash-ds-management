@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Button, Upload, Table, Select, Row, Col } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import columnMappingWithBe from './columnMappingWithBe.json';
+import React, { useState, useEffect } from "react";
+import { Layout, Button, Upload, Table, Select, Row, Col } from "antd";
+import { LogoutOutlined, UploadOutlined } from "@ant-design/icons";
+import axios from "axios";
+import columnMappingWithBe from "./columnMappingWithBe.json";
+import { useAuth } from "./hooks/useAuth";
 
 const { Content } = Layout;
 const { Option } = Select;
 
 function HomePage() {
+  const { logout } = useAuth();
   const [selectedPlatform, setSelectedPlatform] = useState([]);
   const [oldTransactions, setOldTransactions] = useState([]); // New state for old transactions
 
   useEffect(() => {
     // Fetch old transactions when the component mounts
-    axios.get('http://localhost:8888/transactions') // Replace with your API endpoint
+    axios.get("http://localhost:8888/transactions") // Replace with your API endpoint
       .then((response) => {
         setOldTransactions(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching old transactions:', error);
+        console.error("Error fetching old transactions:", error);
       });
   }, []);
 
@@ -27,40 +29,49 @@ function HomePage() {
     setSelectedPlatform(selectedValue);
   };
 
-  const platforms = ['PingPong', 'LianLian'];
+  const platforms = ["PingPong", "LianLian"];
 
   const customRequest = ({ file, onSuccess }) => {
     // Send the file to the backend at http://localhost:8888
     const formData = new FormData();
 
     // Prepare the data to send
-    formData.append('file', file);
-    formData.append('platform', selectedPlatform);
+    formData.append("file", file);
+    formData.append("platform", selectedPlatform);
 
     // Send the data and handle the response
-    axios.post('http://localhost:8888/upload', formData)
+    axios.post("http://localhost:8888/upload", formData)
       .then((response) => {
         onSuccess();
-        console.log('File uploaded successfully');
+        console.log("File uploaded successfully");
 
         // Fetch old transactions again to refresh the table
-        axios.get('http://localhost:8888/transactions')
+        axios.get("http://localhost:8888/transactions")
           .then((response) => {
             setOldTransactions(response.data);
           })
           .catch((error) => {
-            console.error('Error fetching old transactions:', error);
+            console.error("Error fetching old transactions:", error);
           });
       })
       .catch((error) => {
-        console.error('File upload error:', error);
+        console.error("File upload error:", error);
       });
   };
 
+  const handleLogOut = () => {
+    logout();
+  }
+
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Layout>
-        <Content style={{ padding: '24px' }}>
+        <Row style={{ marginBottom: "-50px" }}>
+          <Col offset={22}>
+            <Button type="primary" icon={<LogoutOutlined/>} onClick={handleLogOut}>Log Out</Button>
+          </Col>
+        </Row>
+        <Content style={{ padding: "24px" }}>
           {/* Content of the main area */}
           <h1>Transaction Processing</h1>
           <Row gutter={8}>
@@ -84,7 +95,7 @@ function HomePage() {
                 showUploadList={true}
                 accept=".xls, .xlsx" // Specify accepted file types
               >
-                <Button icon={<UploadOutlined />}>Upload File</Button>
+                <Button icon={<UploadOutlined/>}>Upload File</Button>
               </Upload>
             </Col>
           </Row>
