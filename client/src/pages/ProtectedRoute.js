@@ -7,7 +7,7 @@ const checkValidToken = async token => {
   return userApi.verifyToken(token);
 }
 
-export const ProtectedRoute = ({ children, type = "user" }) => {
+export const ProtectedRoute = ({ children, type }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children, type = "user" }) => {
     // user is not authenticated
     return <Navigate to="/login"/>;
   } else {
-    if (type === "admin" && user.type !== "admin") {
+    if (type === "admin" && user.user_type !== "admin") {
       return <Navigate to="/"/>;
     } else {
       checkValidToken(user.token).then(isValid => {
